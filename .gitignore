@@ -1,0 +1,26 @@
+# Build artifacts
+build/
+bin/
+*.o
+*.d
+*.out
+*.exe
+
+# Test binaries
+test/test_decoder
+test/*.o
+
+# Valgrind logs
+*.log
+valgrind-out.txt
+
+# Editor / OS junk
+.vscode/
+.idea/
+*.swp
+*~
+.DS_Store
+
+# Core dumps
+core
+core.*
