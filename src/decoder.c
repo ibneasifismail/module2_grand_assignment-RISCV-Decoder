@@ -307,6 +307,16 @@ static void decode_b_type(decoded_inst_t *inst, u32 raw) {
 
 /* ----------------------------------------------------------------------
  * decode_instruction — top-level dispatch by opcode
+ *
+ * NOTE on "garbage" words: per the RV32I spec, only the opcode's low
+ * 7 bits determine the instruction family. A few classic filler
+ * patterns happen to collide with real opcodes — e.g. 0xDEADBEEF has
+ * opcode 0x6F, which is a syntactically valid (if semantically
+ * nonsensical) JAL. This decoder intentionally decodes it as JAL
+ * rather than forcing UNKNOWN, since rejecting validly-encoded
+ * instructions would itself be a decoding bug. True UNKNOWN results
+ * come from opcodes outside the RV32I base set (e.g. 0x7F, all opcode
+ * bits set, as in 0xFFFFFFFF) — see test/programs for examples.
  * --------------------------------------------------------------------*/
 decoded_inst_t decode_instruction(u32 raw, u32 address) {
     decoded_inst_t inst;
