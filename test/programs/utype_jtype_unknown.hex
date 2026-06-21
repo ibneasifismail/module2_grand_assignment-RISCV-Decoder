@@ -1,0 +1,9 @@
+# utype_jtype_unknown.hex — exercises the U-type instructions
+# (LUI/AUIPC), a forward and backward JAL, and a genuinely invalid
+# opcode (0xFFFFFFFF, opcode bits all 1, which is outside the RV32I
+# base opcode set) to confirm UNKNOWN is reported without crashing.
+000012B7  # lui   x5, 4096
+00002317  # auipc x6, 8192
+004000EF  # jal   x1, 4
+FFDFF06F  # jal   x0, -4    (backward jump / infinite loop idiom)
+FFFFFFFF  # UNKNOWN — opcode 0x7F is not part of RV32I
