@@ -34,23 +34,23 @@ riscv-decoder/
 ├── Makefile
 ├── .gitignore
 ├── include/
-│   ├── common.h        # Shared macros, types, constants
-│   ├── decoder.h        # Decoder function prototypes & types
-│   └── memory.h          # Memory subsystem prototypes
+│   ├── common.h      # Shared macros, types, constants
+│   ├── decoder.h     # Decoder function prototypes & types
+│   └── memory.h      # Memory subsystem prototypes
 ├── src/
-│   ├── main.c            # Entry point, CLI parsing
-│   ├── decoder.c          # Instruction decode logic
-│   └── memory.c            # Hex file loading & memory ops
+│   ├── main.c        # Entry point, CLI parsing
+│   ├── decoder.c     # Instruction decode logic
+│   └── memory.c      # Hex file loading & memory ops
 ├── test/
-│   ├── test_decoder.c      # Unit tests for decoder
-│   └── programs/            # Test hex files
+│   ├── test_decoder.c # Unit tests for decoder
+│   └── programs/      # Test hex files
 │       ├── r_type.hex
 │       ├── i_type.hex
 │       ├── branch.hex
 │       ├── mixed.hex
 │       └── utype_jtype_unknown.hex
 └── docs/
-    └── DESIGN.md           # Design decisions & decoder logic
+    └── DESIGN.md     # Design decisions & decoder logic
 ```
 
 ## Build Instructions
