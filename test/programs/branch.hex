@@ -1,0 +1,10 @@
+# branch.hex — exercises every B-type branch instruction with a mix of
+# positive and negative (backward) offsets, to verify the scattered
+# B-type immediate is reassembled and sign-extended correctly.
+00208463  # beq  x1, x2, 8
+FE209CE3  # bne  x1, x2, -8
+0020C863  # blt  x1, x2, 16
+FE20D8E3  # bge  x1, x2, -16
+0020E263  # bltu x1, x2, 4
+FE20FEE3  # bgeu x1, x2, -4
+00108063  # beq  x1, x1, 0     (zero offset — matches assignment's own example)

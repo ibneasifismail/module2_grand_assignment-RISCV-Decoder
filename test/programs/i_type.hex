@@ -1,0 +1,20 @@
+# i_type.hex — exercises every I-type instruction: arithmetic
+# (ADDI/ANDI/ORI/XORI/SLTI/SLTIU/SLLI/SRLI/SRAI), loads
+# (LB/LH/LW/LBU/LHU), the I-type jump (JALR), and a negative-immediate
+# case to confirm sign-extension on ADDI.
+00A10093  # addi  x1, x2, 10
+00F17093  # andi  x1, x2, 15
+00F16093  # ori   x1, x2, 15
+00F14093  # xori  x1, x2, 15
+00512093  # slti  x1, x2, 5
+00513093  # sltiu x1, x2, 5
+00311093  # slli  x1, x2, 3
+00315093  # srli  x1, x2, 3
+40315093  # srai  x1, x2, 3
+00010083  # lb    x1, 0(x2)
+00211083  # lh    x1, 2(x2)
+00412083  # lw    x1, 4(x2)
+00014083  # lbu   x1, 0(x2)
+00215083  # lhu   x1, 2(x2)
+004100E7  # jalr  x1, 4(x2)
+FFF10093  # addi  x1, x2, -1   (sign-extension check)

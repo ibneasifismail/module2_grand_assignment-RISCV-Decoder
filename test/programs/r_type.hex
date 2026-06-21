@@ -1,0 +1,13 @@
+# r_type.hex — exercises every R-type instruction (opcode 0x33), all
+# computing on the same operands (x1 = op(x2, x3)) so the only thing
+# that differs between lines is the operation being tested.
+003100B3  # add  x1, x2, x3
+403100B3  # sub  x1, x2, x3
+003170B3  # and  x1, x2, x3
+003160B3  # or   x1, x2, x3
+003140B3  # xor  x1, x2, x3
+003110B3  # sll  x1, x2, x3
+003150B3  # srl  x1, x2, x3
+403150B3  # sra  x1, x2, x3
+003120B3  # slt  x1, x2, x3
+003130B3  # sltu x1, x2, x3
