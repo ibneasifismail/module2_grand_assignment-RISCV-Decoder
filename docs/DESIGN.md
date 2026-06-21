@@ -224,3 +224,24 @@ an upper-immediate for LUI/AUIPC, a jump target for JAL/JALR) without
 re-checking `mnemonic` for every case. The struct was deliberately
 designed now with that future use in mind, rather than only with printing
 in mind.
+
+## 10. Testing Strategy Summary
+
+Testing happens at two levels, deliberately kept separate:
+
+- **Unit tests** (`test/test_decoder.c`) call `decode_instruction()` and
+  `format_instruction()` directly as a library, with no file I/O and no
+  process boundary. This is where bit-exact correctness is pinned down —
+  including the underlying `EXTRACT_BITS`/`SIGN_EXTEND` macros — fast
+  enough to run on every `make test` without needing a hex file on disk.
+- **Integration / hex-program tests** (`test/programs/*.hex`) exercise the
+  full pipeline end-to-end through the actual CLI binary, including the
+  file-loading and table-formatting code that the unit tests don't touch
+  at all. These double as living documentation of what a real RV32I
+  program looks like for each instruction category.
+
+Keeping these separate means a unit test failure points straight at a
+decoding bug, while a hex-program test failure (run manually via
+`./bin/riscv-decoder test/programs/<file>.hex`) points at something in
+the file-loading or CLI layer instead.
+
