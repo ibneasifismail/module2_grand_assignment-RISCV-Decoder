@@ -43,8 +43,17 @@ typedef int32_t  i32;
  * describes instruction fields (e.g. "funct3 = inst[14:12]").
  *
  * Example: EXTRACT_BITS(0x003100B3, 6, 0) -> 0x33 (the opcode field)
- * --------------------------------------------------------------------*/
-#define BIT_MASK(n)            ((1u << (n)) - 1u)
+ *
+ * BIT_MASK(n) builds a mask of the low `n` bits. For n in 1..31 this is
+ * simply (1u << n) - 1u. n == 32 is the special case: shifting a 32-bit
+ * unsigned value left by 32 is undefined behavior in C (the shift
+ * count must be strictly less than the operand's width), even though
+ * "all 32 bits set" is the mathematically obvious answer. We handle
+ * n == 32 explicitly as 0xFFFFFFFFu so EXTRACT_BITS(value, 31, 0) — a
+ * legitimate full-word extraction — is well-defined rather than
+ * relying on whatever a given compiler happens to do with the
+ * out-of-range shift. --------------------------------------------------------------------*/
+#define BIT_MASK(n)            ((n) >= 32u ? 0xFFFFFFFFu : ((1u << (n)) - 1u))
 #define EXTRACT_BITS(value, hi, lo) \
     (((u32)(value) >> (lo)) & BIT_MASK((hi) - (lo) + 1u))
 

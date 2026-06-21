@@ -98,6 +98,23 @@ likely, since the macro call reads the same way the spec table does.
 and J-type) where individual *single* bits, not ranges, need to be pulled
 from non-contiguous positions and reassembled.
 
+> **Edge case found during review:** `BIT_MASK(n)` originally computed
+> `(1u << n) - 1u` unconditionally. No production call site ever requests
+> a full 32-bit-wide mask, but while writing unit tests for the macro
+> itself, the case `EXTRACT_BITS(value, 31, 0)` was added to confirm a
+> full-word extraction works — and it doesn't, because that expands to
+> `1u << 32`, which is undefined behavior in C: a left shift by an amount
+> greater than or equal to the operand's bit width is never defined,
+> even though "all bits set" is the obviously-intended answer. The fix
+> special-cases `n >= 32` to return `0xFFFFFFFFu` directly. This is worth
+> calling out because the *old* code printed the correct answer under
+> `-O2` on this compiler — it just did so by luck of the specific
+> compiler/flag combination, which is exactly why "it happened to print
+> the right answer" is not the same thing as "it is defined behavior."
+> A debug build with different optimization settings, or a different
+> compiler version, could have produced a different (wrong) result from
+> the same source line.
+
 ## 4. Sign Extension
 
 Every RV32I immediate is sign-extended per the spec, so this needed to be
