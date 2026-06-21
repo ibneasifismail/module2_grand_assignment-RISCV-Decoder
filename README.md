@@ -128,9 +128,11 @@ instruction format:
 
 A hand-rolled unit test suite (`test/test_decoder.c`, no external
 framework dependency) exercises `decode_instruction()` and
-`format_instruction()` directly with 51 assertions across every
-instruction format, sign-extension edge cases, and crash-safety on
-invalid/zero/garbage input. Run with `make test`.
+`format_instruction()` directly with 62 assertions — covering every
+instruction format, sign-extension edge cases, the underlying
+`EXTRACT_BITS`/`EXTRACT_BIT`/`SIGN_EXTEND` bit-manipulation macros in
+isolation, and crash-safety on invalid/zero/garbage input. Run with
+`make test`.
 
 The project has been verified with `make valgrind` to run with zero
 memory leaks and zero invalid memory accesses across every test program

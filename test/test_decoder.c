@@ -183,10 +183,35 @@ static void test_robustness(void) {
     CHECK(maxaddr.address == 0xFFFFFFFC, "Maximum address value is stored without overflow/crash");
 }
 
+/* ----------------------------------------------------------------------
+ * Bit-manipulation macro tests — exercise EXTRACT_BITS/EXTRACT_BIT/
+ * SIGN_EXTEND directly, independent of any instruction decoding, so a
+ * regression in the underlying macros is caught even if it happens to
+ * not affect any of the specific instructions tested above.
+ * --------------------------------------------------------------------*/
+static void test_bit_macros(void) {
+    printf("\n-- Bit-manipulation macros (common.h) --\n");
+
+    CHECK(EXTRACT_BITS(0x003100B3u, 6, 0) == 0x33, "EXTRACT_BITS pulls opcode field [6:0] correctly");
+    CHECK(EXTRACT_BITS(0x003100B3u, 14, 12) == 0x0, "EXTRACT_BITS pulls funct3 field [14:12] correctly");
+    CHECK(EXTRACT_BITS(0x40310133u, 31, 25) == 0x20, "EXTRACT_BITS pulls funct7 field [31:25] correctly");
+    CHECK(EXTRACT_BITS(0xFFFFFFFFu, 31, 0) == 0xFFFFFFFFu, "EXTRACT_BITS handles the full 32-bit range");
+
+    CHECK(EXTRACT_BIT(0xFE209CE3u, 31) == 1, "EXTRACT_BIT reads bit 31 correctly");
+    CHECK(EXTRACT_BIT(0xFE209CE3u, 0) == 1, "EXTRACT_BIT reads bit 0 correctly");
+    CHECK(EXTRACT_BIT(0x00000000u, 15) == 0, "EXTRACT_BIT reads a zero bit correctly");
+
+    CHECK(SIGN_EXTEND(0xFFFu, 12) == -1, "SIGN_EXTEND treats all-ones 12-bit field as -1");
+    CHECK(SIGN_EXTEND(0x800u, 12) == -2048, "SIGN_EXTEND treats 12-bit 0x800 (sign bit set) as -2048");
+    CHECK(SIGN_EXTEND(0x7FFu, 12) == 2047, "SIGN_EXTEND treats 12-bit 0x7FF (max positive) as 2047");
+    CHECK(SIGN_EXTEND(0x1u, 13) == 1, "SIGN_EXTEND leaves a small positive 13-bit value unchanged");
+}
+
 int main(void) {
     printf("RISC-V Decoder Unit Test Suite\n");
     printf("===============================\n");
 
+    test_bit_macros();
     test_r_type();
     test_i_type_arith();
     test_loads_and_stores();
