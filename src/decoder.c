@@ -383,9 +383,8 @@ decoded_inst_t decode_instruction(u32 raw, u32 address) {
             break;
     }
 
-    strncpy(inst.mnemonic_str, mnemonic_to_string(inst.mnemonic),
-            sizeof(inst.mnemonic_str) - 1);
-    inst.mnemonic_str[sizeof(inst.mnemonic_str) - 1] = '\0';
+    snprintf(inst.mnemonic_str, sizeof(inst.mnemonic_str), "%s",
+             mnemonic_to_string(inst.mnemonic));
 
     return inst;
 }
