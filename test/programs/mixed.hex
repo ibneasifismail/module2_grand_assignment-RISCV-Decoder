@@ -1,0 +1,11 @@
+# mixed.hex — small mixed-instruction program used in the assignment's
+# expected-output example (Section 9.4). Demonstrates I-type arithmetic,
+# R-type ALU ops, store/load, a backward branch, and a jump.
+00500113
+00A00193
+003100B3
+40310133
+0020A023
+0000A103
+FE209CE3
+004000EF
